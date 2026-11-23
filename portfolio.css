@@ -736,8 +736,8 @@ mark.m-green{box-shadow:inset 0 -.3em 0 rgba(127,195,66,.45)}
    PROOF OF ACHIEVEMENT  (the "See certificate" strip + lightbox)
    An achievement card that has a certificate carries one
    <button class="ach-proof" data-proof="Images/....png">. The little
-   thumbnail inside it is inlined in the HTML, so nothing extra is
-   downloaded until a visitor actually opens the lightbox.
+   thumbnail inside it is a small WebP from Images/thumbs/, lazy-loaded,
+   so the 1 MB scan is only fetched once a visitor opens the lightbox.
    ============================================================ */
 .ach-proof{
   display:flex;align-items:center;gap:.7rem;width:100%;margin-top:.4rem;
