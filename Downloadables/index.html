@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ariane — Portfolio</title>
+<meta name="description" content="Ariane's portfolio: achievements, projects, technical and generic skills. Built like a Cut the Rope level." />
+<meta name="theme-color" content="#FBF5EA" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="portfolio.css" />
+
+<script>document.documentElement.classList.add('js');</script>
+<script src="portfolio.js" defer></script>
+
+<!--
+  HOW TO EDIT
+  This page is three files: index.html (the markup, this file), portfolio.css
+  (every style: colours are in :root at the top of it, mobile rules at the
+  bottom) and portfolio.js (every behaviour: the counts, the playground and the
+  certificate lightbox). Both are linked in the <head>, so there is no build
+  step: save a file and refresh the browser.
+
+  1. Sections run in order: Hero → 01 Personal details → 02 Achievements →
+     03 Others (leadership + CCA record) → 04 Projects → 05 Skills →
+     06 Strengths → 07 Playground → 08 Contact. Each is its own <section>.
+     The little wooden plate number and the "LEVEL 0N · NAME" eyebrow are
+     written by hand in each section: if you add or reorder a section,
+     renumber them (and the matching link in <nav>).
+  2. To add an achievement, copy a whole <article class="ach"> block. Change
+     data-cat (academic / competition / leadership / certification), the year,
+     the title, the org line, the summary and the two <p> in .ach-more.
+     That is all. No number is written into the HTML anywhere: the lede
+     phrase, the "Showing N of M" counter and the "Show all N" button are all
+     filled in by portfolio.js, by counting the .ach cards. The same script
+     derives the three hero figures at the top of the page, the leadership-role
+     count in section 03 and the project count in section 04, so add or delete
+     an item and every figure follows. The numbers still left in the markup are
+     only the fallback for a browser with JS switched off — never edit them to
+     change what a visitor sees. How many cards show before you press "Show
+     all" is the INITIAL constant in portfolio.js (currently 3).
+  3. Others: the left panel is the leadership roles (.oth-list, copy an <li>),
+     the right is the CCA record (.oth-ledger, one <li> per activity:
+     .oth-when for the years, then the title and the .oth-org line). To put a
+     CCA point figure in, add <b class="pts">…</b> inside the ledger <li> —
+     the grid is .oth-ledger{grid-template-columns:6.6rem minmax(0,1fr)}.
+  4. Projects: each card's year lives in its kicker, e.g.
+     <p class="proj-kicker"><b>01</b><span>·</span><span>Security</span>
+     <span>·</span><span>2026</span></p>. Change that last span when you copy
+     the card into a new year, so the timeline stays honest.
+  5. Photos: each <img> points at an Images/... file next to this page, so the
+     page works offline with no CDN. Keep the names exactly as they are on disk
+     (underscores, no spaces): a path with a space has to be written as %20,
+     e.g. "Om%20nom/sprite_standard.webp" for the "Om nom" folder. The polaroid
+     in "Personal details" is an empty .photo-slot on purpose (Ariane's choice):
+     drop an image in Images/ and put <img src="Images/your-photo.jpg" alt="...">
+     inside .photo-slot to fill it.
+  6. Résumé and certificates: the PDFs live in Downloadables/, so the header
+     button opens "Downloadables/PROCOMM_Resume_Advertisement.pdf", and the two
+     proof buttons at the end of section 03 open "Downloadables/CCARecords_Poly.pdf"
+     and "Downloadables/CCA_Cert_for_Secondary.pdf". The award scans live in
+     Images/ and are opened by the lightbox (see 8). All are plain links
+     (target="_blank", no `download` attribute) so a click never replaces the
+     site: add `download` if you would rather they save straight into the
+     Downloads folder instead of opening.
+  7. Colours are all in :root at the top of portfolio.css.
+  8. Proof of an achievement: a card that has a certificate carries one
+     <button class="ach-proof" data-proof="Images/EAGLES.webp">. data-proof is the
+     big file the lightbox opens; data-proof-title / data-proof-meta are the
+     two lines it shows above the picture. The small <img class="ach-proof-thumb">
+     inside the button is a ~5 KB WebP from Images/thumbs/, lazy-loaded, so a
+     visitor never downloads a 1 MB scan just to draw a thumbnail. To change one,
+     repoint that src (or overwrite the file in Images/thumbs/). Copy a whole
+     .ach-proof block to give another card proof; delete it to take the proof
+     away. One card uses <a class="ach-proof" href="Images/Edusave_Cert_2026 (Y1).pdf"
+     target="_blank"> instead of a button (no data-proof): no mobile browser
+     shows a PDF nicely inside a page, so that one opens in its own tab.
+  9. Phone layout: every mobile rule lives in the @media (max-width:700px),
+     (max-width:560px) and (max-width:400px) blocks near the end of
+     portfolio.css, so nothing in them can change what a laptop sees. The .stage
+     min-height in the 700px block is the playground's play area on a phone -
+     raise it if the level feels too small.
+-->
+
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<svg class="ico-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-5.7 6.5-10.5a6.5 6.5 0 0 0-13 0C5.5 15.3 12 21 12 21Z"/><circle cx="12" cy="10.4" r="2.3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M9.5 9.5h9v9h-9z"/><path d="M15 6.5v-2H6v9h2"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v10M8 10.5l4 4 4-4M5 19h14"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3.5 8h3l1.6-2.2h7.8L17.5 8h3v11h-17z"/><circle cx="12" cy="13" r="3.2"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 12.5c0 4-3.8 7-8.5 7-1 0-2-.1-2.9-.4L4 21l1.4-3.6A6.6 6.6 0 0 1 3.5 12.5c0-4 3.8-7 8.5-7s8.5 3 8.5 7Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M15.5 20v-1.8a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.2" cy="7.6" r="3.4"/><path d="M21 20v-1.8a4 4 0 0 0-3-3.8M16 4.4a4 4 0 0 1 0 7.3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3.4 2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.1"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13.2 2.5 4.5 14.2h6L9.6 21.5 19.5 9.4h-6l.9-6.9Z"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6.4" cy="6.4" r="2.6"/><circle cx="6.4" cy="17.6" r="2.6"/><path d="M8.6 8.2 20 18M8.6 15.8 20 6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18.5 14.5V20h-14V6.5H9"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5l2.1 5.4 5.4 2.1-5.4 2.1L12 18.5l-2.1-5.4L4.5 11l5.4-2.1L12 3.5Z"/></symbol>
+  <symbol id="i-zoom" viewBox="0 0 24 24"><circle cx="10.7" cy="10.7" r="6.2"/><path d="m15.3 15.3 4.2 4.2M8.1 10.7h5.2M10.7 8.1v5.2"/></symbol>
+  <symbol id="i-badge" viewBox="0 0 24 24"><circle cx="12" cy="9.4" r="5.6"/><path d="m8.3 14.3-1.4 6.2 5.1-2.7 5.1 2.7-1.4-6.2"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hud" id="hud">
+  <div class="hud-inner wrap">
+    <a class="brand" href="#top" aria-label="Ariane — back to top">
+      <span class="brand-candy" aria-hidden="true"></span>
+      <span class="brand-txt">
+        <strong>Ariane</strong>
+        <em>portfolio · level 01</em>
+      </span>
+    </a>
+
+    <nav class="hud-nav" id="hud-nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#others">Others</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#playground">Play</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="hud-right">
+      <div class="hud-progress">
+        <span class="stars" id="hud-stars" role="img" aria-label="0 of 3 stars explored">
+          <i class="star"></i><i class="star"></i><i class="star"></i>
+        </span>
+        <span class="hud-pct" id="hud-pct">0%</span>
+      </div>
+      <a class="btn btn-candy btn-sm" href="Downloadables/PROCOMM_Resume_Advertisement.pdf" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+        <span>Résumé</span>
+      </a>
+      <button class="hud-menu" id="hud-menu" type="button" aria-expanded="false" aria-controls="hud-nav" aria-label="Open menu">
+        <svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<a id="top"></a>
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="chip" data-reveal>
+      <span class="dot dot--pulse" aria-hidden="true"></span>
+      <span>Open to internship</span>
+      <span aria-hidden="true">·</span>
+      <span>Diploma in Cybersecurity &amp; Digital Forensics · Year 2</span>
+    </p>
+
+    <h1 id="hero-title" data-reveal style="--d:.06s">
+      Hi, I'm Ariane.<br />
+      I like <mark>asking questions</mark>,&nbsp;<mark class="m-green">solving problems</mark>, and sharing what I learn.
+    </h1>
+
+    <p class="hero-sub" data-reveal style="--d:.12s">
+      Second-year Cybersecurity &amp; Digital Forensics student at Temasek Polytechnic. I run vulnerability assessments, build enterprise networks in Packet Tracer, and enjoy learning through hands-on projects and new experiences.
+    </p>
+
+    <div class="hero-cta" data-reveal style="--d:.18s">
+      <a class="btn btn-candy" href="#achievements">
+        See achievements
+        <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#playground">
+        <svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>
+        Play the level
+      </a>
+    </div>
+
+    <ul class="hero-facts" data-reveal style="--d:.24s">
+      <li><b id="stat-ach">6</b><span>awards &amp; honours</span></li>
+      <li><b id="stat-proj">4</b><span>projects shipped</span></li>
+      <li><b id="stat-leads">2</b><span>leadership roles</span></li>
+    </ul>
+  </div>
+
+  <div class="hero-stage" id="hero-stage" data-reveal style="--d:.1s" aria-hidden="true">
+    <div class="hs-board"></div>
+    <div class="hs-inner">
+      <div class="hs-tape"></div>
+      <div class="hs-note">my art director<span>he works for candy <3 →</span></div>
+      <span class="hs-star s1"></span>
+      <span class="hs-star s2"></span>
+      <span class="hs-star s3"></span>
+
+      <div class="hs-swing">
+        <div class="hs-rope"></div>
+        <div class="hs-knot"></div>
+        <div class="hs-candy"></div>
+      </div>
+
+      <div class="hs-plank"></div>
+      <img class="hs-omnom" id="hero-omnom" src="Om%20nom/sprite_standard.webp" alt="" width="200" height="206" />
+    </div>
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="about" aria-labelledby="about-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">01</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 01 · Personal details</p>
+      <h2 id="about-h">Personal details</h2>
+      <p class="lede">The short version, plus the paperwork a module teacher usually asks for.</p>
+    </div>
+  </div>
+
+  <div class="about-grid">
+    <figure class="polaroid" data-reveal>
+      <!-- Swapping in a real photo: delete the five elements below and put
+           <img src="your-photo.jpg" alt="Ariane"> inside .photo-slot instead. -->
+      <div class="photo-slot">
+        <span class="ps-tag">Player 01</span>
+        <span class="ps-mono" aria-hidden="true">AL</span>
+        <div class="stars stars--sm" aria-label="Rated five out of five">
+          <span class="star is-on"></span><span class="star is-on"></span><span class="star is-on"></span><span class="star is-on"></span><span class="star is-on"></span>  
+        </div>
+        <span class="ps-note"><b>Ariane Lee Wen Hui</b>CYBER &amp; FORENSICS &middot; YEAR 2</span>
+      </div>
+      <figcaption>Camera shy, portfolio isn't. 🤓</figcaption>
+    </figure>
+
+    <div class="about-body" data-reveal style="--d:.08s">
+      <p class="lead">
+        I'm a second-year Cybersecurity & Digital Forensics student at Temasek Polytechnic. Outside of school, I enjoy gaming, spending time with friends, and balancing my studies with part-time work.
+      </p>
+      <p>
+        I'd describe myself as reliable and curious. I'm usually the one starting conversations and getting to know people, especially when everyone else is waiting for someone to speak first. I enjoy learning new things, asking questions, and figuring things out as I go.
+      </p>
+      <p>
+        Right now, I'm focused on building my skills, gaining real-world experience, and meeting people who have something new to teach me.
+      </p>
+
+      <dl class="facts">
+        <div><dt>Name</dt><dd>Ariane Lee Wen Hui</dd></div>
+        <div><dt>Course &amp; year</dt><dd>Diploma in Cybersecurity &amp; Digital Forensics, Year 2</dd></div>
+        <div><dt>School</dt><dd>Temasek Polytechnic</dd></div>
+        <div><dt>Location</dt><dd>Singapore</dd></div>
+        <div><dt>Availability</dt><dd>Year-long internship attachment · Apr 2027 - Feb 2028</dd></div>
+        <div><dt>Languages</dt><dd>English &amp; Mandarin (fluent)</dd></div>
+        <div><dt>Studying now</dt><dd>More Networking, Auditing, Maths, Wireshark, PHP</dd></div>
+        <div><dt>Alongside study</dt><dd>Part-time at Chagee since June 2026</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="achievements" aria-labelledby="ach-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">02</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 02 · Achievements</p>
+      <h2 id="ach-h">Achievements</h2>
+      <p class="lede">
+        <span id="ach-lede">Everything</span> that happened, newest first. 😹
+        Filter by category, or open a card for the detail.
+      </p>
+    </div>
+  </div>
+
+  <div class="ach-toolbar" id="ach-filters" role="group" aria-label="Filter achievements by category" data-reveal>
+    <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+    <button class="filter" type="button" data-filter="academic" aria-pressed="false">Academic</button>
+    <button class="filter" type="button" data-filter="competition" aria-pressed="false">Competition</button>
+    <button class="filter" type="button" data-filter="leadership" aria-pressed="false">Leadership</button>
+    <button class="filter" type="button" data-filter="certification" aria-pressed="false">Certificates</button>
+  </div>
+
+  <div class="ach-grid" id="ach-grid">
+
+    <article class="ach" data-cat="certification" data-reveal>
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2026</span>
+        <span class="ach-cat" data-c="certification">Certificate</span>
+      </div>
+      <h3>SHIELD Award — Sentinel Programme (DIS)</h3>
+      <p class="ach-org">Sentinel Programme · Internal Security Department</p>
+      <p class="ach-sum">Awarded the programme's SHIELD Award as a participant in the Sentinel Programme.</p>
+      <div class="ach-more" id="more-1">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Attended practical workshops on coding, network forensics and cybersecurity-related, then competed in CTF challenges against teams from other institutions.</p>
+          <p><b>Why it matters.</b> First time I worked on security problems alongside people from other schools, and made friends along the way. 💓</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-1">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+    </article>
+
+    <article class="ach" data-cat="academic" data-reveal style="--d:.05s">
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2026</span>
+        <span class="ach-cat" data-c="academic">Academic</span>
+      </div>
+      <h3>Edusave Certificate of Academic Achievement</h3>
+      <p class="ach-org">Temasek Polytechnic</p>
+      <p class="ach-sum">Awarded for academic achievement in my diploma course.</p>
+      <div class="ach-more" id="more-2">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Kept coursework consistent during my first academic year while working part-time shifts alongside it.</p>
+          <p><b>Why it matters.</b> It's the consistency proof — not one lucky exam.</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-2">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <a class="ach-proof" href="Images/Edusave_Cert_2026%20(Y1).pdf" target="_blank" rel="noopener">
+        <img class="ach-proof-thumb" src="Images/thumbs/Edusave_2026_Y1.webp" alt="" width="160" height="237" loading="lazy" decoding="async" />
+        <span class="ach-proof-txt"><b>See certificate</b><em>PDF</em></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg>
+      </a>
+    </article>
+
+    <article class="ach" data-cat="leadership" data-reveal style="--d:.1s">
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2024</span>
+        <span class="ach-cat" data-c="leadership">Leadership</span>
+      </div>
+      <h3>Student Leadership Award (Distinction)</h3>
+      <p class="ach-org">Punggol Secondary School</p>
+      <p class="ach-sum">The school's top tier of the student leadership award, earned through Audio Visual Aid (AVA) Club.</p>
+      <div class="ach-more" id="more-3">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Helped lead a 50-member club, coordinated duty rosters, and supported school assemblies and events behind the scenes.</p>
+          <p><b>Why it matters.</b> It taught me that good leadership isn't always visible. It's about preparation, teamwork, and making sure everything runs smoothly when it matters.</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-3">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <button class="ach-proof" type="button"
+              data-proof="Images/School_Leadership_Award.webp"
+              data-proof-title="Student Leadership Award (Distinction)"
+              data-proof-meta="Punggol Secondary School · 2024"
+              data-proof-alt="Student Leadership Award (Distinction) certificate, Punggol Secondary School, dated 10 May 2024">
+        <img class="ach-proof-thumb" src="Images/thumbs/School_Leadership_Award.webp" alt="" width="241" height="180" loading="lazy" decoding="async" />
+        <span class="ach-proof-txt"><b>See certificate</b><em>Leadership award · 2024</em></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-zoom"/></svg>
+      </button>
+    </article>
+
+    <article class="ach" data-cat="leadership" data-reveal style="--d:.15s">
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2024</span>
+        <span class="ach-cat" data-c="leadership">Leadership</span>
+      </div>
+      <h3>Edusave Award for Achievement, Good Leadership &amp; Service (EAGLES)</h3>
+      <p class="ach-org">Punggol Secondary School</p>
+      <p class="ach-sum">Awarded for achievement together with good leadership and service to the school community.</p>
+      <div class="ach-more" id="more-4">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Combined club leadership with service commitments across the school year.</p>
+          <p><b>Why it matters.</b> It reflected the effort I put into different parts of school life, not just academics.</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-4">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <button class="ach-proof" type="button"
+              data-proof="Images/EAGLES.webp"
+              data-proof-title="Edusave Award for Achievement, Good Leadership &amp; Service (EAGLES)"
+              data-proof-meta="Punggol Secondary School · 2024"
+              data-proof-alt="Edusave Award for Achievement, Good Leadership and Service (EAGLES) 2024 certificate">
+        <img class="ach-proof-thumb" src="Images/thumbs/EAGLES.webp" alt="" width="160" height="229" loading="lazy" decoding="async" />
+        <span class="ach-proof-txt"><b>See certificate</b><em>EAGLES award · 2024</em></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-zoom"/></svg>
+      </button>
+    </article>
+
+    <article class="ach" data-cat="academic" data-reveal style="--d:.2s">
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2024</span>
+        <span class="ach-cat" data-c="academic">Academic</span>
+      </div>
+      <h3>Edusave Certificate of Academic Achievement</h3>
+      <p class="ach-org">Punggol Secondary School</p>
+      <p class="ach-sum">Awarded with distinctions in Mathematics, Combined Physics &amp; Chemistry, Principles of Accounts and Chinese.</p>
+      <div class="ach-more" id="more-5">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Balanced seven O-Level subjects while staying involved in leadership activities and school commitments.</p>
+          <p><b>Why it matters.</b> It showed me the value of consistency. Small efforts every day added up over time.</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-5">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <button class="ach-proof" type="button"
+              data-proof="Images/Edusave_Cert_2024.jpg"
+              data-proof-title="Edusave Certificate of Academic Achievement"
+              data-proof-meta="Punggol Secondary School · 2024"
+              data-proof-alt="Edusave Certificate of Academic Achievement 2024, Punggol Secondary School">
+        <img class="ach-proof-thumb" src="Images/thumbs/Edusave_Cert_2024.webp" alt="" width="160" height="232" loading="lazy" decoding="async" />
+        <span class="ach-proof-txt"><b>See certificate</b><em>Edusave · 2024</em></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-zoom"/></svg>
+      </button>
+    </article>
+
+    <article class="ach" data-cat="academic" data-reveal style="--d:.05s">
+      <span class="ach-tab" aria-hidden="true"></span>
+      <div class="ach-top">
+        <span class="ach-year">2023</span>
+        <span class="ach-cat" data-c="academic">Academic</span>
+      </div>
+      <h3>Edusave Certificate of Academic Achievement</h3>
+      <p class="ach-org">Punggol Secondary School</p>
+      <p class="ach-sum">Awarded for academic achievement in secondary school.</p>
+      <div class="ach-more" id="more-6">
+        <div class="ach-more-in">
+          <p><b>What I did.</b> Kept my grades up while balancing the AVA club and school commitments.</p>
+          <p><b>Why it matters.</b> Looking back, it was a small achievement that encouraged me to aim higher. 😚</p>
+        </div>
+      </div>
+      <button class="ach-toggle" type="button" aria-expanded="false" aria-controls="more-6">
+        <span>Details</span>
+        <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <button class="ach-proof" type="button"
+              data-proof="Images/Edusave_Cert_2023.webp"
+              data-proof-title="Edusave Certificate of Academic Achievement"
+              data-proof-meta="Punggol Secondary School · 2023"
+              data-proof-alt="Edusave Certificate of Academic Achievement 2023, Punggol Secondary School">
+        <img class="ach-proof-thumb" src="Images/thumbs/Edusave_Cert_2023.webp" alt="" width="160" height="227" loading="lazy" decoding="async" />
+        <span class="ach-proof-txt"><b>See certificate</b><em>Edusave · 2023</em></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-zoom"/></svg>
+      </button>
+    </article>
+
+  </div>
+
+  <p class="ach-empty" id="ach-empty" hidden>
+    <b>Work in progress. I will do better. 💪🥹</b>
+    <span>Nothing filed under this category yet — check back next year.</span>
+  </p>
+
+  <div class="ach-footer" data-reveal id="ach-footer">
+    <p class="ach-count" id="ach-count" aria-live="polite"></p>
+    <button class="btn btn-ghost btn-sm" id="ach-more" type="button" aria-expanded="false">
+      <span>Show all</span>
+      <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+    </button>
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="others" aria-labelledby="oth-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">03</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 03 · Others</p>
+      <h2 id="oth-h">Others</h2>
+      <p class="lede">The part of school that never fits in one line on a CV — leadership roles and the CCA record behind them.</p>
+    </div>
+  </div>
+
+  <div class="oth-grid">
+
+    <div class="panel" data-reveal>
+      <div class="panel-head">
+        <svg class="ico" aria-hidden="true"><use href="#i-users"/></svg>
+        <h3>Leadership roles</h3>
+      </div>
+      <p class="panel-sub"><span id="oth-count">Two</span> so far: one in poly, one in secondary school.</p>
+
+      <ul class="oth-list">
+        <li>
+          <span class="oth-when">2026 · Oct semester</span>
+          <h4>Class Representative</h4>
+          <p class="oth-org">Temasek Polytechnic · Cybersecurity &amp; Digital Forensics</p>
+          <p>
+            The class monitor. I pass information between my class and the tutors, keep track of
+            deadlines and submissions, and pick up the admin work nobody volunteers for.
+          </p>
+        </li>
+        <li>
+          <span class="oth-when">2023 – 2024</span>
+          <h4>Vice-President, Audio Visual Aid (AVA) Club</h4>
+          <p class="oth-org">Punggol Secondary School</p>
+          <p>
+            Helped run a 50-member club: duty rosters, AV support for assemblies and school events,
+            and showing the newer members how the equipment actually works.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel" data-reveal style="--d:.08s">
+      <div class="panel-head">
+        <svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>
+        <h3>CCA record</h3>
+      </div>
+      <p class="panel-sub">Co-curricular activities, newest first.</p>
+
+      <ul class="oth-ledger">
+        <li>
+          <span class="oth-when">2026 – now</span>
+          <span>
+            <b>Class Representative</b>
+            <em>Temasek Polytechnic · class monitor for my diploma class</em>
+          </span>
+        </li>
+        <li>
+          <span class="oth-when">2021 – 2024</span>
+          <span>
+            <b>Audio Visual Aid (AVA) Club</b>
+            <em>Punggol Secondary School · Vice-President, 2023 – 2024</em>
+          </span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="oth-dl" data-reveal>
+    <p class="oth-dl-h">The paperwork behind it, if you want to check:</p>
+    <div class="oth-dl-row">
+      <a class="btn btn-ghost btn-sm" href="Downloadables/CCARecords_Poly.pdf" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+        <span>CCA records · poly</span>
+      </a>
+      <a class="btn btn-ghost btn-sm" href="Downloadables/CCA_Cert_for_Secondary.pdf" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+        <span>CCA certificate · secondary</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+<section class="sec wrap" id="projects" aria-labelledby="proj-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">04</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 04 · Projects</p>
+      <h2 id="proj-h">Projects</h2>
+      <p class="lede"><span id="proj-lede">Four things</span> I actually finished — a penetration test, an enterprise network, a website, and this page.</p>
+    </div>
+  </div>
+
+  <div class="proj-grid">
+
+    <article class="proj" data-reveal>
+      <div class="proj-shot">
+        <span class="proj-tape tl" aria-hidden="true"></span>
+        <span class="proj-tape br" aria-hidden="true"></span>
+        <div class="shot-panel">
+          <p class="shot-kicker">Kill chain · 9.8 → 7.8</p>
+          <ul class="shot-chain">
+            <li>FTP anon</li><li>user: john</li><li>hydra + rockyou</li><li>SSH shell</li><li>sudo NOPASSWD</li><li class="hot">root</li>
+          </ul>
+          <div class="shot-scores">
+            <span class="shot-score"><b class="c-crit">9.8</b><em>critical</em></span>
+            <span class="shot-score"><b class="c-high">7.8</b><em>high</em></span>
+          </div>
+          <p class="shot-foot">2 findings · full compromise · fixed &amp; re-verified</p>
+        </div>
+      </div>
+      <div class="proj-body">
+        <p class="proj-kicker"><b>01</b><span>·</span><span>Security</span><span>·</span><span>2026</span></p>
+        <h3>MedPharm Logistics — penetration test</h3>
+        <p class="proj-role">Team leader + tester · group of 4 · CCD2C03</p>
+        <p class="proj-desc">
+          A full vulnerability assessment and penetration test against a simulated logistics
+          company's hybrid network. I started at an anonymous FTP share and finished with root.
+        </p>
+        <p class="proj-out">
+          <svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span>Two findings — 9.8 critical and 7.8 high — chained into full system compromise, then fixed and re-verified.</span>
+        </p>
+        <ul class="proj-tags">
+          <li class="tag">Kali</li><li class="tag">Nmap</li><li class="tag">Hydra</li><li class="tag">CVSS v3.1</li><li class="tag">sudo</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="proj" data-reveal style="--d:.06s">
+      <div class="proj-shot">
+        <span class="proj-tape tl" aria-hidden="true"></span>
+        <span class="proj-tape br" aria-hidden="true"></span>
+        <img src="Images/ENNK_Cisco.webp" alt="Screenshot of the ENNK enterprise network topology, built in Cisco Packet Tracer" loading="lazy" decoding="async" />
+        <div class="shot-panel">
+          <p class="shot-kicker">Enterprise networking · CCF2C06</p>
+          <ul class="shot-chain">
+            <li>Multi-area OSPF</li><li>Route summarisation</li><li>LLQ &amp; CBWFQ</li><li>NAT/PAT</li><li>Edge ACL</li><li>Port security</li>
+          </ul>
+          <div class="shot-scores">
+            <span class="shot-score"><b>22+</b><em>routers</em></span>
+            <span class="shot-score"><b>4</b><em>ospf areas</em></span>
+            <span class="shot-score"><b>13+</b><em>switches</em></span>
+          </div>
+          <p class="shot-foot">dynamic routing · QoS · edge security · wireless</p>
+        </div>
+      </div>
+      <div class="proj-body">
+        <p class="proj-kicker"><b>02</b><span>·</span><span>Networking</span><span>·</span><span>2026</span></p>
+        <h3>Enterprise network build</h3>
+        <p class="proj-role">Design + configuration · solo · Cisco Packet Tracer</p>
+        <p class="proj-desc">
+          A multi-site enterprise network built end to end: multi-area OSPF, WAN redundancy,
+          QoS on the edge, and access control from the ISP inwards.
+        </p>
+        <p class="proj-out">
+          <svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span>Summarised five Area 100 routes into a single LSA, shrinking the routing table on three downstream routers.</span>
+        </p>
+        <ul class="proj-tags">
+          <li class="tag">Packet Tracer</li><li class="tag">OSPF</li><li class="tag">QoS</li><li class="tag">ACL</li><li class="tag">NAT/PAT</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="proj" data-reveal style="--d:.12s">
+      <div class="proj-shot">
+        <span class="proj-tape tl" aria-hidden="true"></span>
+        <span class="proj-tape br" aria-hidden="true"></span>
+        <img src="Images/Adoption_Project.jpg" alt="Screenshot of the Adopt a Friend website, showing its list of adoptable pets" loading="lazy" decoding="async" />
+      </div>
+      <div class="proj-body">
+        <p class="proj-kicker"><b>03</b><span>·</span><span>Web</span><span>·</span><span>2026</span></p>
+        <h3>Adopt a Friend</h3>
+        <p class="proj-role">Design + build · solo</p>
+        <p class="proj-desc">
+          A pet adoption site: a public listing page with pet cards and availability badges, plus
+          an admin portal I kept locked to myself. Built by hand, no template.
+        </p>
+        <p class="proj-out">
+          <svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span>School Project: Public listings and an admin side only I could get into.</span>
+        </p>
+        <ul class="proj-tags">
+          <li class="tag">HTML</li><li class="tag">CSS</li><li class="tag">JavaScript</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="proj" data-reveal style="--d:.18s">
+      <div class="proj-shot">
+        <span class="proj-tape tl" aria-hidden="true"></span>
+        <span class="proj-tape br" aria-hidden="true"></span>
+        <svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg>
+        <span class="proj-cap">this page, actually, yuh</span>
+        <img src="Images/Portfolio_Website_Picture.webp" alt="Screenshot of this portfolio website's home page" loading="lazy" decoding="async" />
+      </div>
+      <div class="proj-body">
+        <p class="proj-kicker"><b>04</b><span>·</span><span>Playground</span><span>·</span><span>2026</span></p>
+        <h3>This portfolio</h3>
+        <p class="proj-role">Design + code · solo</p>
+        <p class="proj-desc">
+          One HTML file, no frameworks, and a small rope-physics toy at the bottom. An excuse to
+          practise canvas work, custom properties, and knowing when to stop adding features.
+        </p>
+        <p class="proj-out">
+          <svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg>
+          <span>Verlet integration, 60fps, and one very hungry monster.</span>
+        </p>
+        <ul class="proj-tags">
+          <li class="tag">HTML</li><li class="tag">CSS</li><li class="tag">Canvas 2D</li>
+        </ul>
+        <div class="proj-links">
+          <a href="#playground"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>Try the level</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="skills" aria-labelledby="skills-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">05</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 05 · Skills</p>
+      <h2 id="skills-h">Technical &amp; generic skills</h2>
+      <p class="lede">Things I've learned through school, projects, and self-study.</p>
+    </div>
+  </div>
+
+  <div class="skills-grid">
+
+    <div class="panel" data-reveal>
+      <div class="panel-head">
+        <svg class="ico" aria-hidden="true"><use href="#i-code"/></svg>
+        <h3>Technical</h3>
+      </div>
+      <p class="panel-sub">What I can actually open a blank file and build with.</p>
+
+      <div class="skill-groups">
+      <div class="skill-group">
+        <p class="skill-cat">Languages &amp; scripting</p>
+        <ul class="chips">
+          <li class="skill"><span class="tier tier--core"></span>Python</li>
+          <li class="skill"><span class="tier tier--core"></span>HTML &amp; CSS</li>
+          <li class="skill"><span class="tier tier--work"></span>JavaScript</li>
+          <li class="skill"><span class="tier tier--work"></span>SQL</li>
+          <li class="skill"><span class="tier tier--work"></span>Bash</li>
+          <li class="skill"><span class="tier tier--explore"></span>PHP</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-cat">Security &amp; forensics</p>
+        <ul class="chips">
+          <li class="skill"><span class="tier tier--core"></span>Kali Linux</li>
+          <li class="skill"><span class="tier tier--core"></span>Nmap</li>
+          <li class="skill"><span class="tier tier--work"></span>Wireshark</li>
+          <li class="skill"><span class="tier tier--work"></span>Hydra</li>
+          <li class="skill"><span class="tier tier--work"></span>Autopsy</li>
+          <li class="skill"><span class="tier tier--work"></span>FTK Imager</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-cat">Networking</p>
+        <ul class="chips">
+          <li class="skill"><span class="tier tier--core"></span>Cisco Packet Tracer</li>
+          <li class="skill"><span class="tier tier--work"></span>Routing &amp; OSPF</li>
+          <li class="skill"><span class="tier tier--work"></span>VLANs &amp; trunks</li>
+          <li class="skill"><span class="tier tier--work"></span>ACLs &amp; NAT</li>
+          <li class="skill"><span class="tier tier--work"></span>QoS</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-cat">Tools &amp; other</p>
+        <ul class="chips">
+          <li class="skill"><span class="tier tier--core"></span>Microsoft Office</li>
+          <li class="skill"><span class="tier tier--work"></span>KNIME</li>
+          <li class="skill"><span class="tier tier--work"></span>Linux</li>
+          <li class="skill"><span class="tier tier--work"></span>Power BI</li>
+          <li class="skill"><span class="tier tier--work"></span>Canva</li>
+          <li class="skill"><span class="tier tier--explore"></span>Git &amp; GitHub</li>
+        </ul>
+      </div>
+
+      </div>
+
+      <div class="legend">
+        <span><i class="tier tier--core"></i> Core — done it in a real project</span>
+        <span><i class="tier tier--work"></i> Working — can build with it</span>
+        <span><i class="tier tier--explore"></i> Exploring — learning now</span>
+      </div>
+    </div>
+
+    <div class="panel" data-reveal style="--d:.08s">
+      <div class="panel-head">
+        <svg class="ico" aria-hidden="true"><use href="#i-users"/></svg>
+        <h3>Generic</h3>
+      </div>
+      <p class="panel-sub">The ones a teacher can actually see in a classroom.</p>
+
+      <div class="soft-list">
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg></span>
+          <div>
+            <h4>Communication</h4>
+            <p>Explains technical work to people who don't want the technical work.</p>
+            <span class="ev">Shown through: Project presentations, technical reports, and portfolio write-ups.</span>
+          </div>
+        </div>
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></span>
+          <div>
+            <h4>Teamwork</h4>
+            <p>Takes the unglamorous task without being asked, then tells people where it lives.</p>
+            <span class="ev">Shown through: VAPT group projects and cross-institution CTF competitions.</span>
+          </div>
+        </div>
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-target"/></svg></span>
+          <div>
+            <h4>Problem solving</h4>
+            <p>Breaks a stuck problem into smaller tests instead of guessing louder.</p>
+            <span class="ev">Shown through: Identifying and exploiting multiple vulnerabilities during VAPT assessments.</span>
+          </div>
+        </div>
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></span>
+          <div>
+            <h4>Time management</h4>
+            <p>Plans backwards from the deadline and ships a rough version early.</p>
+            <span class="ev">Shown through: Balancing coursework, project deadlines, and part-time work.</span>
+          </div>
+        </div>
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-zap"/></svg></span>
+          <div>
+            <h4>Adaptability</h4>
+            <p>Picks up an unfamiliar tool mid-task instead of waiting to be taught it.</p>
+            <span class="ev">Shown through: Self-taught Python, JavaScript, HTML, and CSS for personal projects.</span>
+          </div>
+        </div>
+        <div class="soft">
+          <span class="soft-ico"><svg class="ico" aria-hidden="true"><use href="#i-target"/></svg></span>
+          <div>
+            <h4>Attention to detail</h4>
+            <p>Documents what was actually found, not what was hoped for.</p>
+            <span class="ev">Shown through: Re-testing findings and verifying fixes during VAPT projects.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="strengths" aria-labelledby="str-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">06</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 06 · Strengths</p>
+      <h2 id="str-h">Strengths</h2>
+      <p class="lede">A few qualities that best describe how I work and learn.</p>
+    </div>
+  </div>
+
+  <div class="str-grid">
+    <article class="str" data-reveal>
+      <span class="str-num">01</span>
+      <h3>Keeps things organised</h3>
+      <p>I like keeping clear records so other people can understand what was done and why.</p>
+    </article>
+    <article class="str" data-reveal style="--d:.06s">
+      <span class="str-num">02</span>
+      <h3>Learns by breaking things</h3>
+      <p>I learn best by building, testing, and figuring things out for myself.</p>
+    </article>
+    <article class="str" data-reveal style="--d:.12s">
+      <span class="str-num">03</span>
+      <h3>Reliable on a shift or a team</h3>
+      <p>Whether it's school, work, or a project team, I try to be someone people can rely on.</p>
+    </article>
+    <article class="str" data-reveal style="--d:.18s">
+      <span class="str-num">04</span>
+      <h3>Finishes things</h3>
+      <p>I stay committed to a project from the initial idea all the way to the final details.</p>
+    </article>
+  </div>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+
+<section class="sec wrap" id="playground" aria-labelledby="play-h">
+  <div class="sec-head" data-reveal>
+    <span class="plate" aria-hidden="true">07</span>
+    <div class="sec-head-txt">
+      <p class="eyebrow">Level 07 · Playground</p>
+      <h2 id="play-h">Cut the rope. Feed Om Nom.</h2>
+      <p class="lede">
+        Credits Alex Rivera 😎
+      </p>
+    </div>
+  </div>
+
+  <div class="play-shell" data-reveal>
+    <div class="play-bar">
+      <span class="level-chip">
+        <svg class="ico" style="width:11px;height:11px" aria-hidden="true"><use href="#i-play"/></svg>
+        1-1 · slice &amp; feed
+      </span>
+      <span class="play-stat">
+        <span class="stars" id="stage-stars" aria-hidden="true">
+          <i class="star"></i><i class="star"></i><i class="star"></i>
+        </span>
+        <span>Stars <b id="star-counter">0 / 3</b></span>
+      </span>
+      <span class="play-stat">
+        <svg class="ico" style="width:12px;height:12px" aria-hidden="true"><use href="#i-spark"/></svg>
+        <span>Fed <b id="score-counter">0</b></span>
+      </span>
+      <span class="spacer"></span>
+      <button class="play-reset" id="btn-re-tether" type="button">
+        <svg class="ico" aria-hidden="true"><use href="#i-scissors"/></svg>
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="stage-tex" aria-hidden="true"></div>
+      <div class="stage-patch" aria-hidden="true"></div>
+      <div class="stage-corner" aria-hidden="true"></div>
+      <div class="stage-vignette" aria-hidden="true"></div>
+
+      <canvas id="physics-canvas" aria-label="Interactive rope physics: drag the candy or slice the cords to feed Om Nom"></canvas>
+
+      <svg id="slice-svg" aria-hidden="true">
+        <polyline id="slice-trail" points="" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" opacity="0"></polyline>
+      </svg>
+
+      <div class="hint-pill" id="hint-pill">
+        <svg class="ico" aria-hidden="true"><use href="#i-scissors"/></svg>
+        <span>Slice a cord or drag the candy</span>
+      </div>
+
+      <div id="chew-bloom" aria-hidden="true"></div>
+      <div class="stage-plank" id="omnom-plank" aria-hidden="true"></div>
+      <img class="stage-omnom" id="omnom-svg" src="Om%20nom/sprite_standard.webp" alt="" width="140" height="144" draggable="false" />
+
+      <div class="stage-toast" id="stage-toast" role="status" aria-live="polite">
+        <span class="star"></span><span>Level complete — 3 stars!</span>
+      </div>
+    </div>
+
+    <div class="play-foot">
+      <span class="pf-left">
+        <span class="dot" aria-hidden="true"></span>
+        Drag the sweet to swing · cut every cord · collect all three stars
+      </span>
+      <span>Verlet integration · 60 fps</span>
+    </div>
+  </div>
+
+  <details class="how" data-reveal>
+    <summary>
+      <svg class="ico" aria-hidden="true"><use href="#i-code"/></svg>
+      How it works
+      <svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg>
+    </summary>
+    <div class="how-body">
+      <div class="how-item">
+        <h4>Verlet integration</h4>
+        <p>
+          The candy stores its current and previous position; velocity is just the difference.
+          No explicit integration error, and it stays stable at any frame rate.
+        </p>
+      </div>
+      <div class="how-item">
+        <h4>Rigid cord solving</h4>
+        <p>
+          Each cord is solved fourteen times per frame against the shared candy position, so the
+          cords stay dead straight while still allowing slack when you pull.
+        </p>
+      </div>
+      <div class="how-item">
+        <h4>Pointer slicing</h4>
+        <p>
+          Every pointer move becomes a segment, tested against each live cord. A hit converts the
+          cord into a hanging eight-node stub that swings on its own.
+        </p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<div class="rope-sep" aria-hidden="true"></div>
+<section class="sec wrap" id="contact" aria-labelledby="contact-h">
+  <div class="contact-card" data-reveal>
+    <div class="contact-left">
+      <p class="eyebrow">Level 08 · Contact</p>
+      <h2 id="contact-h">Let's talk about the internship.</h2>
+      <p class="lede">
+        I'd love to show you the projects in person. Email is best — I check it daily and reply
+        properly, even when the answer is "not yet".
+      </p>
+
+      <div class="contact-actions">
+        <a class="btn btn-candy" href="mailto:leewh.ariane@gmail.com">
+          <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>
+          <span>Email me</span>
+        </a>
+        <button class="btn btn-ghost" id="copy-email" type="button" data-email="leewh.ariane@gmail.com">
+          <svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg>
+          <span class="btn-label">Copy email address</span>
+        </button>
+      </div>
+
+      <ul class="contact-list">
+        <li>
+          <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>
+          <span>leewh.ariane@gmail.com</span>
+        </li>
+        <li>
+          <svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg>
+          <span>Singapore · happy to travel</span>
+        </li>
+        <li>
+          <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg>
+          <span><a href="https://www.linkedin.com/in/ariane-lee-7a173b361/" target="_blank" rel="noopener">LinkedIn</a></span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contact-omnom">
+      <img src="Om%20nom/sprite_idle.webp" alt="Om Nom waving" width="210" height="176" loading="lazy" />
+      <p class="hand">thanks for scrolling<br />all the way down</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <div class="footer-left">
+      <span class="brand-candy" aria-hidden="true" style="width:18px;height:18px"></span>
+      <span>Built by hand · <b>Ariane</b> · © 2026</span>
+    </div>
+    <div class="footer-links">
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ---------- certificate lightbox ---------- -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-title">
+  <div class="lb-head">
+    <div class="lb-head-txt">
+      <p class="lb-title" id="lb-title">Certificate</p>
+      <p class="lb-meta" id="lb-meta"></p>
+    </div>
+    <button class="lb-close" id="lb-close" type="button" aria-label="Close">
+      <svg class="ico" aria-hidden="true"><use href="#i-close"/></svg>
+    </button>
+  </div>
+
+  <div class="lb-stage" id="lb-stage">
+    <img class="lb-img lb-img--ghost" id="lb-ghost" src="" alt="" aria-hidden="true" />
+    <img class="lb-img" id="lb-img" src="" alt="" />
+    <div class="lb-spin" aria-hidden="true"></div>
+  </div>
+
+  <div class="lb-foot">
+    <button class="lb-btn" id="lb-prev" type="button">
+      <svg class="ico" aria-hidden="true" style="transform:rotate(90deg)"><use href="#i-chev"/></svg><span>Previous</span>
+    </button>
+    <span class="lb-count" id="lb-count" aria-live="polite"></span>
+    <button class="lb-btn" id="lb-next" type="button">
+      <span>Next</span><svg class="ico" aria-hidden="true" style="transform:rotate(-90deg)"><use href="#i-chev"/></svg>
+    </button>
+    <a class="lb-btn" id="lb-open" href="#" target="_blank" rel="noopener">
+      <svg class="ico" aria-hidden="true"><use href="#i-external"/></svg><span>Open original</span>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
